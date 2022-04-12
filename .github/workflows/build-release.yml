@@ -49,7 +49,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
-          pyinstaller --clean $APP_NAME -F -n $PKG_NAME-$GITHUB_REF_NAME-${{ matrix.name }}.${{ matrix.extension }} -c
+          pyinstaller --clean $APP_NAME -F -c -n $PKG_NAME-$GITHUB_REF_NAME-${{ matrix.name }}.${{ matrix.extension }} 
 
       - name: Strip and run UPX on executables
         uses: svenstaro/upx-action@2.0.1
