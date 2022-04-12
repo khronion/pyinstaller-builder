@@ -50,8 +50,7 @@ jobs:
           echo "Building ${{ env.PKG_NAME }}-${{ github.ref_name }}-${{ matrix.name }}.${{ matrix.extension }}"
           pip install -r requirements.txt
           pip install pyinstaller
-          echo "pyinstaller --onefile --console --name ${{ env.PKG_NAME }}-${{ github.ref_name }}-${{ matrix.name }}.${{ matrix.extension }} $APP_NAME"
-          pyinstaller --onefile --console --name ${{ env.PKG_NAME }}-${{ github.ref_name }}-${{ matrix.name }}.${{ matrix.extension }} $APP_NAME 
+          pyinstaller --onefile --console --name ${{ env.PKG_NAME }}-${{ github.ref_name }}-${{ matrix.name }}.${{ matrix.extension }} ${{ env.APP_NAME }} 
 
       - name: Strip and run UPX on executables
         uses: svenstaro/upx-action@2.0.1
