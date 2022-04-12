@@ -27,10 +27,10 @@ jobs:
           sudo apt -y install upx
           pip install -r requirements.txt
           pip install pyinstaller
-          pyinstaller --clean spyglass.py -F -n Spyglass-Executable -c
+          pyinstaller --clean app.py -F -n App-Executable -c
           
       - name: Push Release
         uses: softprops/action-gh-release@v0.1.14
         with:
           files: |
-            dist/Spyglass-Executable
+            dist/App-Executable
