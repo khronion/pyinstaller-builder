@@ -18,7 +18,24 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: macos-latest
+            name: macOS
+            extension: intel
+
+          - os: ubuntu-latest
+            name: linux-amd64
+            extension: bin
+
+          - os: windows-latest
+            name: windows
+            extension: exe
+
     steps:
       # Runs a set of commands using the runners shell
       - name: Checkout
@@ -33,14 +50,14 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install pyinstaller
-          pyinstaller --clean $APP_NAME -F -n $PKG_NAME-$GITHUB_REF_NAME-linux.bin -c
+          pyinstaller --clean $APP_NAME -F -n $PKG_NAME-$GITHUB_REF_NAME-${{ matrix.name }}.${{ matrix.extension }} -c
 
       - name: Strip and run UPX on executables
         uses: svenstaro/upx-action@2.0.1
         with:
-          file: dist/${{ env.PKG_NAME }}-${{ github.ref_name }}-linux.bin
+          file: dist/${{ env.PKG_NAME }}-${{ github.ref_name }}-${{ matrix.name }}.${{ matrix.extension }}
 
       - name: Push Release
         uses: softprops/action-gh-release@v0.1.14
         with:
-          files: dist/${{ env.PKG_NAME }}-${{ github.ref_name }}-linux.bin
+          files: dist/${{ env.PKG_NAME }}-${{ github.ref_name }}-${{ matrix.name }}.${{ matrix.extension }}
