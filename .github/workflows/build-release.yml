@@ -12,8 +12,11 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-ubuntu:
-    runs-on: ubuntu-latest
+  build-all:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
       # Runs a set of commands using the runners shell
       - name: Checkout
@@ -27,7 +30,8 @@ jobs:
           sudo apt -y install upx
           pip install -r requirements.txt
           pip install pyinstaller
-          pyinstaller --clean app.py -F -n App-Executable -c
+          pyinstaller --clean app.py -F -n App-Executable-${{ matrix.os }} -c
+          
           
       - name: Push Release
         uses: softprops/action-gh-release@v0.1.14
