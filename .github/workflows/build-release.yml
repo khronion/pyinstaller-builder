@@ -2,6 +2,11 @@
 
 name: Build Release
 
+env:
+  APP_NAME: app.py
+  PKG_NAME: Demo
+
+
 # Controls when the workflow will run
 on:
   release:
@@ -12,26 +17,30 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-all:
+  build-linux:
     runs-on: ubuntu-latest
     steps:
       # Runs a set of commands using the runners shell
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup Python
         uses: actions/setup-python@v3
         with:
           python-version: '3.10'
-      - name: Build
+
+      - name: Build with pyInstaller
         run: |
-          sudo apt -y install upx
           pip install -r requirements.txt
           pip install pyinstaller
-          pyinstaller --clean app.py -F -n App-Executable -c
-          
-          
+          pyinstaller --clean $APP_NAME -F -n $PKG_NAME-linux.bin -c
+
+      - name: Strip and run UPX on executables
+        uses: svenstaro/upx-action@2.0.1
+        with:
+          files: dist/${{ env.PKG_NAME }}-linux.bin
+
       - name: Push Release
         uses: softprops/action-gh-release@v0.1.14
         with:
-          files: |
-            dist/App-Executable
+          files: dist/${{ env.PKG_NAME }}-linux.bin
