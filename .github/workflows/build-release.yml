@@ -38,9 +38,9 @@ jobs:
       - name: Strip and run UPX on executables
         uses: svenstaro/upx-action@2.0.1
         with:
-          file: dist/${{ env.PKG_NAME }}-${{GITHUB_REF_NAME}}-linux.bin
+          file: dist/${{ env.PKG_NAME }}-$GITHUB_REF_NAME-linux.bin
 
       - name: Push Release
         uses: softprops/action-gh-release@v0.1.14
         with:
-          files: dist/${{ env.PKG_NAME }}-${{GITHUB_REF_NAME}}-linux.bin
+          files: dist/${{ env.PKG_NAME }}-$GITHUB_REF_NAME-linux.bin
