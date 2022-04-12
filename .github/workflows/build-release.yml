@@ -47,6 +47,7 @@ jobs:
 
       - name: Build with pyInstaller
         run: |
+          echo "Building $PKG_NAME-$GITHUB_REF_NAME-${{ matrix.name }}.${{ matrix.extension }}"
           pip install -r requirements.txt
           pip install pyinstaller
           pyinstaller --clean $APP_NAME -F -c -n $PKG_NAME-$GITHUB_REF_NAME-${{ matrix.name }}.${{ matrix.extension }} 
