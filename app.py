@@ -1,5 +1,8 @@
 import click
 
+"""
+This script is used as a demo app to showcase how the workflow works. It is not part of pyinstaller-Builder.
+"""
 
 @click.command()
 @click.option('--count', default=1, help='Number of greetings.')
